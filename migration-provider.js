@@ -23,13 +23,10 @@ module.exports = function (config) {
                 sql = sql.replace(new RegExp(escapeRegExp(key), "g"), config.parameters[key]);
             });
 
-            console.log('migration is: '+migration)
-            console.log('sql is '+sql)
-
             return sql;
 
             function migrationIsYamlFile() {
-                return migration.indexOf(".yaml" !== -1)
+                return migration.indexOf(".yaml") !== -1
             }
 
             function parseYaml(sql) {
