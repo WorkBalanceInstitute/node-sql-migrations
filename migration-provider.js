@@ -22,6 +22,10 @@ module.exports = function (config) {
             Object.keys(config.parameters || {}).forEach(function (key) {
                 sql = sql.replace(new RegExp(escapeRegExp(key), "g"), config.parameters[key]);
             });
+
+            console.log('migration is: '+migration)
+            console.log('sql is '+sql)
+
             return sql;
 
             function migrationIsYamlFile() {
