@@ -29,7 +29,7 @@ module.exports = function (config) {
             }
 
             function parseYaml(sql) {
-                return (sql.match(/sql: (\w| |"|\.|\n     |')+/g) || []).map(s => s.split(': ')[1]).join(';\n')+";"
+                return ((sql.match(/sql: (\w| |"|\.|\n     |')+/g) || []).map(s => s.split(': ')[1]).join(';\n')+";").replace(/"public"/g, 'public')
             }
         }
     };
