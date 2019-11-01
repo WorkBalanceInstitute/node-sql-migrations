@@ -34,7 +34,7 @@ function getPending(migrationsList, appliedMigrationIds, minMigrationTime) {
     var pending = [];
     migrationsList.forEach(function (migration) {
         var id = migration.match(/^(\d+)/)[0];
-        if ((!minMigrationTime || id >= minMigrationTime) && !~appliedMigrationIds.indexOf(id) && migration.match(/^\d+\w+\.up.sql*$/)) {
+        if ((!minMigrationTime || id >= minMigrationTime) && !~appliedMigrationIds.indexOf(id) && migration.match(/^\d+(\w| )+\.up\.(yaml|sql)$/)) { // TODO: check that it matches yaml files
             pending.push(migration);
         }
     });

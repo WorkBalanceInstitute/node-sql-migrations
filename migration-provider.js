@@ -14,10 +14,23 @@ module.exports = function (config) {
 
         getSql: function (migration) {
             var sql = fs.readFileSync(path.join(config.migrationsDir, migration)).toString();
+
+            if (migrationIsYamlFile()) {
+                sql = parseYaml(sql)
+            }
+
             Object.keys(config.parameters || {}).forEach(function (key) {
                 sql = sql.replace(new RegExp(escapeRegExp(key), "g"), config.parameters[key]);
             });
             return sql;
+
+            function migrationIsYamlFile() {
+                return migration.indexOf(".yaml" !== -1)
+            }
+
+            function parseYaml(sql) {
+                return [...sql.matchAll(/sql: (\w| |"|\.|\n     |'|;)+/g)].map(a => a[0].split(':')[1]).join(';\n')
+            }
         }
     };
 };
