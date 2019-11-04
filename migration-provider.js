@@ -30,8 +30,8 @@ module.exports = function (config) {
             }
 
             function parseYaml(sql) {
-                return ((sql.match(/sql: (\w| |"|\.|\n     |\\n|\\|\(|\)|'|=)+/g) || []).map(s => s.split(': ')[1].replace(/\n/g, '')).join(';\n')+";")
-            }
+                return (`${(sql.match(/sql: (\w| |"|\.|\n {5}|\\n|\\|\(|\)|'|=)+/g) || []).map(s => s.split(': ')[1].replace(/(\n|\\n)/g, '').replace(/\\"/g, '"')).join(';\n')};`)
+              }
         }
     };
 };
