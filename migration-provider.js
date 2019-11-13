@@ -29,8 +29,9 @@ module.exports = function (config) {
                 return migration.indexOf(".yaml") !== -1
             }
 
+
             function parseYaml(sql) {
-                return (`${(sql.match(/sql: (\w| |"|\.|\n {5}|\\n|\\|\(|\)|'|=)+/g) || []).map(s => s.replace(/sql: "/g, 'sql: ').split(': ')[1].replace(/(\n|\\n)/g, '').replace(/\\"/g, '"')).join(';\n')};`)
+                return (`${(sql.match(/sql: (\w| |"|\.|\n {5}|\\n|\\|\(|\)|'|=|,)+/g) || []).map(s => s.replace(/sql: "/g, 'sql: ').split(': ')[1].replace(/(\n|\\n)/g, '').replace(/\\"/g, '"')).join(';\n')};`)
               }
         }
     };
