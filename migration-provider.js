@@ -30,7 +30,23 @@ module.exports = function (config) {
             }
 
             function parseYaml(sql) {
-                return (`${(sql.match(/sql: ((?!type:).)+/gs) || []).map(s => s.replace(/sql: "/g, 'sql: ').split(': ')[1].replace(/(\n|\\n|\|-)/g, '').replace(/\\"/g, '"').replace(/\\/g, '')).join(';\n')};`).replace(/;"/g, '')
+                const joinedSqlStrings = `${(sql.match(/sql: ((?!type:).)+/gs) || [])
+                  .map(s => {
+                    const cleanedString = s
+                      .replace(/sql: "/g, 'sql: ')
+                      .split('sql: ')[1]
+                      .replace(/(\n|\\n|\|-)/g, '')
+                      .replace(/\\"/g, '"')
+                      .replace(/\\/g, '')
+              
+                    const stringHasEvenNumberOfQuoteCharacters = (cleanedString.split('"').length - 1) % 2 === 0
+                    return stringHasEvenNumberOfQuoteCharacters
+                      ? cleanedString
+                      : cleanedString.substr(0, cleanedString.lastIndexOf('"'))
+                  })
+                  .join(';\n')};`
+              
+                return joinedSqlStrings.replace(/;(\s)*;/gs, ';')
               }
         }
     };
